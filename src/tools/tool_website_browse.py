@@ -175,14 +175,14 @@ The tool automatically retries with different crawler backends if the initial at
 
             # Map string parameters to enums
             crawler_type = CrawlerType(crawler)
-            retry_strat = RetryStrategy(retry_strategy)
+            retry_strategy = RetryStrategy(retry_strategy)
 
             # Create task configuration
             config = WebsiteBrowseTaskConfig(
                 url=url,
                 crawler_type=crawler_type,
                 retry_times=retry_times,
-                retry_strategy=retry_strat,
+                retry_strategy=retry_strategy,
                 headless=headless,
                 use_stealth_mode=use_stealth_mode,
                 page_timeout=timeout_ms,
