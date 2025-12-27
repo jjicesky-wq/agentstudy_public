@@ -120,6 +120,14 @@ class ClaudeConversationMessage(AIConversationMessageBase):
 class ClaudeConversation(AIConversationBase):
     """Claude-specific conversation implementation."""
 
+    def _create_user_prompt_message(
+        self, user_prompt: str, images: Optional[list[str]] = None
+    ) -> ClaudeConversationMessage:
+        """Create user message with proper Claude message type for image support."""
+        return ClaudeConversationMessage(
+            role="user", content=user_prompt, images=images
+        )
+
     def _create_tool_result_message(
         self, tool_call_id: str, tool_name: str, tool_params: str, tool_result: str
     ) -> ClaudeConversationMessage:

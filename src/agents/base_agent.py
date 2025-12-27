@@ -44,11 +44,22 @@ class AIAgentBase(BaseModel):
             self.instruction_arguments = {}
         return self.instruction.safe_substitute(**self.instruction_arguments)
 
+    def _ensure_tool_overrides(self):
+        """Ensure all tools have the override_run methods set for result saving."""
+        for tool in self.tools:
+            if tool.override_run is None:
+                tool.override_run = self._tool_override_run_and_save_result
+            if tool.override_run_async is None:
+                tool.override_run_async = self._tool_override_run_and_save_result_async
+
     def run_agent_conversation(
         self,
         user_prompt: str,
         current_conversation: Optional[AIConversationBase] = None,
     ) -> AIConversationBase:
+        # Ensure tools have overrides set for result saving
+        self._ensure_tool_overrides()
+
         if not current_conversation:
             current_conversation = self.model.create_conversation(
                 system_prompt=self.get_instruction(), tools=self.tools
@@ -62,6 +73,9 @@ class AIAgentBase(BaseModel):
         current_conversation: Optional[AIConversationBase] = None,
     ) -> AIConversationBase:
         """Async version of run_agent_conversation that uses async chat completion."""
+        # Ensure tools have overrides set for result saving
+        self._ensure_tool_overrides()
+
         if not current_conversation:
             current_conversation = self.model.create_conversation(
                 system_prompt=self.get_instruction(), tools=self.tools
@@ -70,13 +84,6 @@ class AIAgentBase(BaseModel):
         return current_conversation
 
     def add_tools(self, tools: list[AIToolBase]):
-        for tool in tools:
-            logger.debug(
-                f"Agent {self.__class__.__name__} added {tool.__class__.__name__} tool: {tool.name}"
-            )
-            tool.override_run = self._tool_override_run_and_save_result
-            tool.override_run_async = self._tool_override_run_and_save_result_async
-
         for existing_tool in self.tools:
             skip = False
             for tool in tools:
@@ -87,6 +94,7 @@ class AIAgentBase(BaseModel):
                 continue
             tools += [existing_tool]
         self.tools = tools
+        self._ensure_tool_overrides()
 
     def _tool_override_run_and_save_result(self, tool: AIToolBase, params: str) -> str:
         result = tool.run_tool(params=params, skip_override=True)
@@ -143,3 +151,32 @@ class AIAgentBase(BaseModel):
         if not self.instruction_arguments:
             self.instruction_arguments = {}
         self.instruction_arguments.update(kwargs)
+
+    def run_agent_interactive(self):
+        current_conversation = None
+        print(
+            """
+*******************************************************************************
+*                    Agent interactive mode started!                          *
+* Commands:                                                                   *
+*   exit  - quit the interactive mode                                         *
+*   info  - display agent instruction                                         *
+*   new   - start a new conversation                                          *
+*******************************************************************************
+"""
+        )
+        while True:
+            user_prompt = input("> ")
+            if user_prompt.strip().lower() == "exit":
+                return
+            elif user_prompt.strip().lower() == "new":
+                current_conversation = None
+                print(">> Start New Conversation <<")
+                continue
+            elif user_prompt.strip().lower() == "info":
+                print(self.get_instruction())
+                continue
+            current_conversation = self.run_agent_conversation(
+                user_prompt=user_prompt, current_conversation=current_conversation
+            )
+            print(current_conversation.last_model_response)
