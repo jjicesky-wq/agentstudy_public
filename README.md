@@ -19,6 +19,9 @@ To set up the environment for this project, follow the steps below:
 4. Install the dependencies of this project:
     - In bash/cmd, navigate to the root of this project (not `src`)
     - Run `pip install -r requirements.txt`
+5. Set up the crawler (optional):
+    - The crawler uses Playwright for web automation
+    - Install Playwright's Chromium browser by running: `playwright install chromium`
 
 At this point, the working environment is configured properly.
 

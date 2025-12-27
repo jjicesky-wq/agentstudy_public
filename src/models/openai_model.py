@@ -101,6 +101,14 @@ class OpenAIConversationMessage(AIConversationMessageBase):
 
 
 class OpenAIConversation(AIConversationBase):
+    def _create_user_prompt_message(
+        self, user_prompt: str, images: Optional[list[str]] = None
+    ) -> OpenAIConversationMessage:
+        """Create user message with proper OpenAI message type for image support."""
+        return OpenAIConversationMessage(
+            role="user", content=user_prompt, images=images
+        )
+
     def _create_tool_result_message(
         self, tool_call_id: str, tool_name: str, tool_params: str, tool_result: str
     ) -> OpenAIConversationMessage:
