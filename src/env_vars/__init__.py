@@ -29,6 +29,15 @@ except ImportError:
         "Install with: pip install python-dotenv"
     )
 
+# Access token
+ACCESS_TOKEN_SECRET_KEY = os.environ.get("ACCESS_TOKEN_SECRET_KEY", "").strip()
+ACCESS_TOKEN_SECRET_ALGORITHM = os.environ.get(
+    "ACCESS_TOKEN_SECRET_ALGORITHM", "HS256"
+).strip()
+ACCESS_TOKEN_EXPIRE_MINUTES = os.environ.get(
+    "ACCESS_TOKEN_EXPIRE_MINUTES", "10080"
+).strip()
+
 # OpenAI related
 OPENAI_API_KEY = os.environ.get(
     "OPENAI_API_KEY",
@@ -70,6 +79,21 @@ AZURE_OPENAI_DEPLOYMENT = os.environ.get(
 AZURE_OPENAI_API_VERSION = os.environ.get(
     "AZURE_OPENAI_API_VERSION",
     "2024-02-15-preview",  # Default to a stable version
+).strip()
+
+# PG
+PG_USERNAME = os.environ.get("PG_USERNAME", "postgres").strip()
+PG_PASSWORD = os.environ.get("PG_PASSWORD", "")
+PG_HOST = os.environ.get("PG_HOST", "localhost").strip()
+PG_PORT = os.environ.get("PG_PORT", "5432")
+PG_DBNAME = os.environ.get("PG_DBNAME", "ddoa").strip()
+PG_SU_USERNAME = os.environ.get("PG_SU_USERNAME", "postgres").strip()
+PG_SU_PASSWORD = os.environ.get("PG_SU_PASSWORD", None)
+
+# Local SQLite database file related
+
+SQLITE_FILE_DIRECTORY = os.environ.get(
+    "SQLITE_FILE_DIRECTORY", os.path.dirname(data.__file__)
 ).strip()
 
 # Debug logging configuration

@@ -19,9 +19,31 @@ To set up the environment for this project, follow the steps below:
     - Run `pip install -r requirements.txt`
 6. Install precommit hooks:
     - Run `pre-commit install`
-7. Set up the crawler (optional):
+7. Set up the crawler:
     - The crawler uses Playwright for web automation
     - Install Playwright's Chromium browser by running: `playwright install chromium`
+8. Install PostgreSQL:
+    - **Mac**:
+        1. Install PostgreSQL using Homebrew: `brew install postgresql@16`
+        2. Start the PostgreSQL service: `brew services start postgresql@16`
+    - **Linux (Ubuntu/Debian)**:
+        1. Install PostgreSQL: `sudo apt update && sudo apt install postgresql postgresql-contrib`
+        2. Start the PostgreSQL service: `sudo systemctl start postgresql`
+    - **Windows**:
+        1. Download PostgreSQL installer from [PostgreSQL Downloads](https://www.postgresql.org/download/windows/)
+        2. Run the installer and follow the setup wizard (remember the password you set for the postgres user)
+9. Create the database:
+    1. Configure the following PostgreSQL environment variables in your `.env` file:
+        - `PG_HOST` - Database host (e.g., `localhost`)
+        - `PG_PORT` - Database port (e.g., `5432`)
+        - `PG_USERNAME` - Username for the application
+        - `PG_PASSWORD` - Password for the application user
+        - `PG_DBNAME` - Database name (e.g., `agentstudy`)
+        - `PG_SU_USERNAME` - PostgreSQL superuser username (e.g., `postgres`)
+        - `PG_SU_PASSWORD` - PostgreSQL superuser password
+    2. Run: `python src/db/database.py`
+
+    This script will automatically create the database and user with the credentials specified in your `.env` file.
 
 At this point, the working environment is configured properly.
 
