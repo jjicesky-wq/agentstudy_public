@@ -86,7 +86,7 @@ PG_USERNAME = os.environ.get("PG_USERNAME", "postgres").strip()
 PG_PASSWORD = os.environ.get("PG_PASSWORD", "")
 PG_HOST = os.environ.get("PG_HOST", "localhost").strip()
 PG_PORT = os.environ.get("PG_PORT", "5432")
-PG_DBNAME = os.environ.get("PG_DBNAME", "ddoa").strip()
+PG_DBNAME = os.environ.get("PG_DBNAME", "agentstudy").strip()
 PG_SU_USERNAME = os.environ.get("PG_SU_USERNAME", "postgres").strip()
 PG_SU_PASSWORD = os.environ.get("PG_SU_PASSWORD", None)
 
