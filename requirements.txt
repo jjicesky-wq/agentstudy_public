@@ -1,4 +1,6 @@
 # Backend API dependencies
+fastapi>=0.118.2,<0.119.0
+uvicorn[standard]>=0.37.0,<0.38.0
 pydantic>=2.0.0
 pydantic-settings>=2.0.0
 

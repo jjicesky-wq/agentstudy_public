@@ -32,7 +32,8 @@ To set up the environment for this project, follow the steps below:
     - **Windows**:
         1. Download PostgreSQL installer from [PostgreSQL Downloads](https://www.postgresql.org/download/windows/)
         2. Run the installer and follow the setup wizard (remember the password you set for the postgres user)
-9. Create the database:
+9. Now, navigate to the `src` folder of this project.
+10. Create the database:
     1. Configure the following PostgreSQL environment variables in your `.env` file:
         - `PG_HOST` - Database host (e.g., `localhost`)
         - `PG_PORT` - Database port (e.g., `5432`)
@@ -41,9 +42,10 @@ To set up the environment for this project, follow the steps below:
         - `PG_DBNAME` - Database name (e.g., `agentstudy`)
         - `PG_SU_USERNAME` - PostgreSQL superuser username (e.g., `postgres`)
         - `PG_SU_PASSWORD` - PostgreSQL superuser password
-    2. Run: `python src/db/database.py`
+    2. Run: `python db/database.py`
 
     This script will automatically create the database and user with the credentials specified in your `.env` file.
+11. Apply the db migration: `alembic upgrade head`
 
 At this point, the working environment is configured properly.
 
