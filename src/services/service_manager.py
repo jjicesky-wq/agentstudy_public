@@ -126,6 +126,18 @@ class ServiceManager:
         Uses lazy factory functions to avoid circular imports.
         Services are only imported when they are first accessed.
         """
+        from services.service_names import SERVICE_WEBSITE_BROWSE
+
+        # Register WebsiteBrowseService with lazy factory
+        def create_website_browse_service():
+            from services.website_browse_service import WebsiteBrowseService
+
+            return WebsiteBrowseService()
+
+        self.register_service(
+            name=SERVICE_WEBSITE_BROWSE,
+            factory=create_website_browse_service,
+        )
 
     # =========================================================================
     # Service Registration
