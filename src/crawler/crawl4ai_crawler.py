@@ -311,34 +311,6 @@ if (navigator.plugins.length === 0) {
         self._crawler = None
         logger.info("Crawl4AICrawler stopped successfully")
 
-    async def _inject_stealth_scripts(self):
-        """Load stealth.min.js for later injection per-page"""
-        if not self.config.use_stealth_mode:
-            logger.debug("Stealth mode disabled, skipping script loading")
-            return
-
-        try:
-            if self._stealth_js is None:
-                stealth_js_path = os.path.join(
-                    os.path.dirname(__file__), "stealth.min.js"
-                )
-
-                if not os.path.exists(stealth_js_path):
-                    logger.warning(
-                        f"stealth.min.js not found at {stealth_js_path}. "
-                        "Run update_stealth_js.py to download it."
-                    )
-                    return
-
-                with open(stealth_js_path, encoding="utf-8") as f:
-                    self._stealth_js = f.read()
-                    logger.info(
-                        f"✅ Loaded stealth.min.js ({len(self._stealth_js)} bytes)"
-                    )
-
-        except Exception as e:
-            logger.warning(f"Failed to load stealth scripts: {str(e)}")
-
     def _convert_crawl4ai_result(self, result: Crawl4AICrawlResult) -> CrawlResultBase:
         """Convert Crawl4AI result to base result format"""
         # Parse media information

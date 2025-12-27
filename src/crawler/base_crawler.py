@@ -7,11 +7,14 @@ This allows for easy swapping of crawler backends while maintaining a consistent
 
 from __future__ import annotations
 
+import os
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Any, Optional
 
 from pydantic import BaseModel
+
+from utilities import logger
 
 
 @dataclass
@@ -254,6 +257,7 @@ class BaseCrawler(ABC):
         """
         # Default implementation using OpenAI
         from model_management import WEB_CONTENT_EXTRACTION, ModelManager
+
         from utilities import logger
 
         logger.info("Processing content with LLM")
@@ -457,6 +461,34 @@ class BaseCrawler(ABC):
         raise NotImplementedError(
             f"{self.__class__.__name__} does not support JavaScript execution"
         )
+
+    async def _inject_stealth_scripts(self):
+        """Load stealth.min.js for later injection per-page"""
+        if not self.config.use_stealth_mode:
+            logger.debug("Stealth mode disabled, skipping script loading")
+            return
+
+        try:
+            if self._stealth_js is None:
+                stealth_js_path = os.path.join(
+                    os.path.dirname(__file__), "stealth.min.js"
+                )
+
+                if not os.path.exists(stealth_js_path):
+                    logger.warning(
+                        f"stealth.min.js not found at {stealth_js_path}. "
+                        "Run update_stealth_js.py to download it."
+                    )
+                    return
+
+                with open(stealth_js_path, encoding="utf-8") as f:
+                    self._stealth_js = f.read()
+                    logger.info(
+                        f"✅ Loaded stealth.min.js ({len(self._stealth_js)} bytes)"
+                    )
+
+        except Exception as e:
+            logger.warning(f"Failed to load stealth scripts: {str(e)}")
 
 
 # Type alias for backward compatibility
