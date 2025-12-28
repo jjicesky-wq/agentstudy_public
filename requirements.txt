@@ -40,6 +40,6 @@ pytest-asyncio>=0.21.0
 pre-commit>=4.3.0,<5.0.0
 
 # Database
-psycopg2>=2.9.10,<3.0.0  # Use psycopg2-binary for easier installation
+psycopg2-binary>=2.9.10,<3.0.0  # Use psycopg2-binary for easier installation
 sqlalchemy>=2.0.43,<3.0.0
 alembic>=1.16.5,<2.0.0
