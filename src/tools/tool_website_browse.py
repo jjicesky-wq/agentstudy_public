@@ -279,15 +279,3 @@ The tool automatically retries with different crawler backends if the initial at
         Returns False because web content may change between requests.
         """
         return False
-
-
-# Convenience function to create the tool
-def create_website_browse_tool() -> WebsiteBrowseTool:
-    """Create and return a WebsiteBrowseTool instance."""
-    return WebsiteBrowseTool()
-
-
-__all__ = [
-    "WebsiteBrowseTool",
-    "create_website_browse_tool",
-]
